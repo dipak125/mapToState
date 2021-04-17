@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React from "react";
+import {connect} from "react-redux";
+import {doIncrement,doDecrement,change} from "./redux";
+
+const mapStateToProps=(state)=>{
+    const counter= state?.counter?.counter;
+    const todo=state.todo;
+    return {counter,todo};
 }
-
-export default App;
+const mapDispatchToProps=(dispatch)=>{
+    return{
+      doInc: (val)=> dispatch(doIncrement(val)),
+    doDic: (val)=> dispatch(doDecrement(val)),
+    doChange: (val)=> dispatch(change(val))
+    }
+}
+const  App=(props)=>{
+  const {counter,todo,doInc,doDic,doChange}=props;
+ 
+  return(
+    <>
+      <h1>counter: {counter}</h1>
+      <h1>id:{todo.id}</h1>
+      <h1>name:{todo.name}</h1>
+      <button onClick={()=> doChange("dipak kumar gope") }>update name</button>
+      <button onClick={()=> doInc(1)}>Increment</button>
+      <button onClick={()=> doDic(1)}>Deccrement</button>
+      
+    </>
+  )
+}
+export default connect(mapStateToProps,mapDispatchToProps)(App);
